@@ -1,16 +1,49 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import { Avatar, Button, Paper, Grid, Typography, Container} from '@material-ui/core';
-import {GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import useStyles from "./styles";
+import jwt_decode from "jwt-decode";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Input from "./Input";
-import Icon from "./icon";
+import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
 const Auth = () => {
     const classes = useStyles();
+    const history = useHistory();
     const [showPassword, setShowPassword] = useState(false);
     const [isSignup, setIsSignup] = useState(false);
+    const dispatch = useDispatch();
 
+    const handleCallBackResponse = async (response) => {
+        //console.log("Encoded JWT ID token" + response.credential);
+        var userObject = jwt_decode(response.credential);
+        document.getElementById('signInDiv').hidden = true;
+        try {
+            dispatch({type: "AUTH", data: userObject});
+            history.push('/');
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const handleSignOut = (event) => {
+        //setUser({});
+        document.getElementById("signInDiv").hidden = false;
+    }
+
+    useEffect(() => {
+        /* global google */
+        google.accounts.id.initialize({
+            client_id:"663809945585-e78kvk0o3f0iiphb5vtsm7tpfjdllrq7.apps.googleusercontent.com",
+            callback: handleCallBackResponse
+        });
+
+        google.accounts.id.renderButton(
+            document.getElementById("signInDiv"),
+            {theme: "outlined", type: "standard", size: "large", width: "365"}
+        );
+    }, []);
+    
     const handleSubmit = () => {
 
     }
@@ -26,10 +59,20 @@ const Auth = () => {
         handleShowPassword(false);
     }
 
-    const login = useGoogleLogin({
-        onSuccess: tokenResponse => console.log(tokenResponse),
-      });
-    
+    // const login = useGoogleLogin({
+    //     onSuccess: tokenResponse => console.log(tokenResponse),
+    //   });
+    // const googleSuccess = (res) => {
+    //     console.log(res);
+    // }
+
+    // const googleError = (error) => {
+    //     console.log(error);
+    //     console.log("Sign in failed");
+    // }
+    // const responseGoogle = (response) => {
+    //     console.log(response);
+    // }
     return (
         <Container component="main" maxWidth="xs">
             <Paper className={classes.paper} elevation={3}>
@@ -54,19 +97,9 @@ const Auth = () => {
                     <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
                         { isSignup ? 'Sign Up' : 'Sign In' }
                     </Button>
-                    <GoogleOAuthProvider clientId='663809945585-e78kvk0o3f0iiphb5vtsm7tpfjdllrq7.apps.googleusercontent.com'>
-                    <GoogleLogin 
-                        onSuccess={credentialResponse => {
-                            console.log(credentialResponse);
-                        }}
-                        onError={() => {
-                            console.log('Login Failed');
-                        }}
-                    />;
-                        <Button className={classes.googleButton} color="primary" fullWidth onClick={() => login()} startIcon={<Icon />} variant="contained">
-                            Google Sign In
-                        </Button>
-                    </GoogleOAuthProvider>
+                
+                    <div id="signInDiv">
+                    </div>
                     
                     <Grid container justifyContent="flex-end">
                         <Grid item>
