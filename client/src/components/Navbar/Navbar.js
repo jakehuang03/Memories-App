@@ -22,8 +22,8 @@ const Navbar = () => {
   }
 
   useEffect(() => {
-    if(user.exp) {
-      if (token.exp * 1000 < new Date().getTime()) logout();
+    if(user?.exp) {
+      if (user.exp * 1000 < new Date().getTime()) logout();
     }
     const token = user?.token;
     if (token) {
