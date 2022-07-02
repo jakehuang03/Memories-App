@@ -11,12 +11,18 @@ import {signin, signup} from '../../actions/auth';
 const initialState = {firstName: '', lastName: '', email: '', password: '', confirmPassword: ''};
 
 const Auth = () => {
-    const classes = useStyles();
-    const history = useHistory();
+    const [formData, setFormData] = useState(initialState);
     const [showPassword, setShowPassword] = useState(false);
     const [isSignup, setIsSignup] = useState(false);
-    const [formData, setFormData] = useState(initialState);
+    const classes = useStyles();
+    const history = useHistory();
     const dispatch = useDispatch();
+    
+    const switchMode = () => {
+        setFormData(initialState);
+        setIsSignup((prevIsSignup) => !prevIsSignup);
+        setShowPassword(false);
+    }
 
     const handleCallBackResponse = async (response) => {
         //console.log("Encoded JWT ID token" + response.credential);
@@ -61,10 +67,6 @@ const Auth = () => {
 
     const handleShowPassword = () => setShowPassword((prevShowPassword) => !prevShowPassword);
 
-    const switchMode = () => {
-        setIsSignup((prevIsSignup) => !prevIsSignup);
-        handleShowPassword(false);
-    }
 
     return (
         <Container component="main" maxWidth="xs">
