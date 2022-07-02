@@ -6,29 +6,28 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Input from "./Input";
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import {signin, signup} from '../../actions/auth';
+
+const initialState = {firstName: '', lastName: '', email: '', password: '', confirmPassword: ''};
 
 const Auth = () => {
     const classes = useStyles();
     const history = useHistory();
     const [showPassword, setShowPassword] = useState(false);
     const [isSignup, setIsSignup] = useState(false);
+    const [formData, setFormData] = useState(initialState);
     const dispatch = useDispatch();
 
     const handleCallBackResponse = async (response) => {
         //console.log("Encoded JWT ID token" + response.credential);
         var userObject = jwt_decode(response.credential);
-        document.getElementById('signInDiv').hidden = true;
+        //document.getElementById('signInDiv').hidden = true;
         try {
             dispatch({type: "AUTH", data: userObject});
             history.push('/');
         } catch (error) {
             console.log(error);
         }
-    }
-
-    const handleSignOut = (event) => {
-        //setUser({});
-        document.getElementById("signInDiv").hidden = false;
     }
 
     useEffect(() => {
@@ -44,12 +43,20 @@ const Auth = () => {
         );
     }, []);
     
-    const handleSubmit = () => {
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        if(isSignup) {
+            dispatch(signup(formData, history))
+        } 
+        else {
+            dispatch(signin(formData, history))
+        }
+        //console.log(formData);
 
     }
 
-    const handleChange = () => {
-
+    const handleChange = (event) => {
+        setFormData({...formData, [event.target.name]: event.target.value})
     }
 
     const handleShowPassword = () => setShowPassword((prevShowPassword) => !prevShowPassword);
@@ -59,20 +66,6 @@ const Auth = () => {
         handleShowPassword(false);
     }
 
-    // const login = useGoogleLogin({
-    //     onSuccess: tokenResponse => console.log(tokenResponse),
-    //   });
-    // const googleSuccess = (res) => {
-    //     console.log(res);
-    // }
-
-    // const googleError = (error) => {
-    //     console.log(error);
-    //     console.log("Sign in failed");
-    // }
-    // const responseGoogle = (response) => {
-    //     console.log(response);
-    // }
     return (
         <Container component="main" maxWidth="xs">
             <Paper className={classes.paper} elevation={3}>
