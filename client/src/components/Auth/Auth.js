@@ -7,6 +7,7 @@ import Input from "./Input";
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import {signin, signup} from '../../actions/auth';
+require('dotenv').config()
 
 const initialState = {firstName: '', lastName: '', email: '', password: '', confirmPassword: ''};
 
@@ -17,7 +18,7 @@ const Auth = () => {
     const classes = useStyles();
     const history = useHistory();
     const dispatch = useDispatch();
-    
+
     const switchMode = () => {
         setFormData(initialState);
         setIsSignup((prevIsSignup) => !prevIsSignup);
@@ -39,7 +40,7 @@ const Auth = () => {
     useEffect(() => {
         /* global google */
         google.accounts.id.initialize({
-            client_id:"663809945585-e78kvk0o3f0iiphb5vtsm7tpfjdllrq7.apps.googleusercontent.com",
+            client_id: process.env.REACT_APP_CLIENT_ID,
             callback: handleCallBackResponse
         });
 
