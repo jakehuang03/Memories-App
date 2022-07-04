@@ -4,8 +4,11 @@ import Posts from "../Posts/Posts";
 import Form from "../Form/Form";
 import { getPosts } from "../../actions/posts";
 import { useDispatch } from "react-redux";
+import useStyles from './styles';
+import Pagination from '../Pagination';
 
 const Home = () => {
+    const classes = useStyles();
     const [currentId, setCurrentId] = useState(null);
     const dispatch = useDispatch();
   

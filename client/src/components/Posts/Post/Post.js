@@ -43,7 +43,7 @@ const Post = ({ post, setCurrentId }) => {
       {(user?.sub === post?.creator || user?.result?._id === post?.creator) && (
       <div className={classes.overlay2}>
         <Button onClick={() => setCurrentId(post._id)} style={{ color: 'white' }} size="small">
-          <MoreHorizIcon fontSize="default" />
+          <MoreHorizIcon fontSize="medium" />
         </Button>
       </div>
       )}
