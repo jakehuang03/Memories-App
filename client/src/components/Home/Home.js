@@ -4,7 +4,7 @@ import {useHistory, useLocation} from 'react-router-dom';
 import ChipInput from 'material-ui-chip-input';
 import Posts from "../Posts/Posts";
 import Form from "../Form/Form";
-import { getPosts } from "../../actions/posts";
+import { getPosts, getPostsBySearch } from "../../actions/posts";
 import { useDispatch } from "react-redux";
 import useStyles from './styles';
 import Pagination from '../Pagination';
@@ -12,6 +12,7 @@ import Pagination from '../Pagination';
 function useQuery() {
   return new URLSearchParams(useLocation().search);
 }
+
 const Home = () => {
     const classes = useStyles();
     const history = useHistory();
@@ -27,9 +28,17 @@ const Home = () => {
       dispatch(getPosts());
     }, [currentId, dispatch]);    
     
+    const searchPost = () => {
+      if(search.trim() || tags) {
+        dispatch(getPostsBySearch({search, tags: tags.join(',')}));
+        history.push(`/posts/search?searchQuery=${search || 'none'}&tags=${tags}`);
+      } else {
+        history.push('/');
+      }
+    }
     const handleKeyPress = (event) => {
       if(event.keyCode === 13) {
-        //search post
+          searchPost();
       }
     }
 
@@ -48,7 +57,7 @@ const Home = () => {
                 name="search"
                 variant="outlined"
                 label="Search Memories"
-                onKeyPress={handleKeyPress}
+                onKeyDown={handleKeyPress}
                 fullWidth
                 value={search}
                 onChange={(event) => setSearch(event.target.value)}
@@ -61,6 +70,7 @@ const Home = () => {
                   label="Search Tags"
                   variant="outlined"
                 />
+                <Button onClick={searchPost} className={classes.searchButton} variant="contained" color="primary">Search</Button>
             </AppBar>
             <Form currentId={currentId} setCurrentId={setCurrentId} />
             <Paper elevation={6}>
