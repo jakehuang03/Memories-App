@@ -1,19 +1,17 @@
 import React from "react";
 import Post from "./Post/Post";
 import { Grid, CircularProgress } from "@material-ui/core";
-import useEffect from "./styles";
 import { useSelector } from "react-redux";
+import useStyles from './styles';
 
 const Posts = ({ setCurrentId }) => {
   const {posts, isLoading} = useSelector((state) => state.posts);
   //console.log(posts);
-  const classes = useEffect();
+  const classes = useStyles();
 
   if(!posts.length && !isLoading) return 'No posts';
 
-  return isLoading ? (
-    <CircularProgress />
-  ) : (
+  return isLoading ? <CircularProgress /> : (
     <Grid
       className={classes.container}
       container
