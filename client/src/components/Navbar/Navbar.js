@@ -34,7 +34,7 @@ const Navbar = () => {
     }
 
     setUser(JSON.parse(localStorage.getItem('profile')));
-  },[location])
+  },[location, user])
 
   let signInButton;
   if (user?.result)  {
