@@ -15,6 +15,11 @@ app.use(cors());
 
 app.use("/posts", postRoutes);
 app.use("/user", userRoutes);
+
+app.get('/', (req,res) => {
+  res.send('APP IS RUNNING.');
+})
+
 const PORT = process.env.PORT || 5000;
 
 mongoose
@@ -22,7 +27,7 @@ mongoose
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
-  .then(() => app.listen(PORT, () => console.log(`Server running on ${PORT}`)))
+  .then(() => app.listen(PORT, () => console.log(`Server Running on Port: http://localhost:${PORT}`)))
   .catch((error) => console.log(error.message));
 
 mongoose.set("useFindAndModify", false);
