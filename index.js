@@ -4,28 +4,30 @@ import mongoose from "mongoose";
 import cors from "cors";
 import postRoutes from "./routes/posts.js";
 import userRoutes from "./routes/users.js";
+import { dirname } from "path";
 
-import dotenv from "dotenv";
+require("dotenv").config({ path: "./config.env" });
+const path = require('path');
 
 const app = express();
-dotenv.config();
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use(cors());
 
-app.use("/posts", postRoutes);
-app.use("/user", userRoutes);
+app.use("/api/posts", postRoutes);
+app.use("/api/user", userRoutes);
 
-if(process.env.NODE_ENV === 'production') {
-  app.use(express.static('client/build'));
-  app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname + '/client/build/index.html'));
-    });
+if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging') {
+  app.use(express.static(path.join(__dirname, 'client/build')));
+  app.get('*', (req,res) => {
+    res.sendFile(path.join(__dirname, 'client/build/index.html'));
+  });
 }
-
-app.get('/', (req,res) => {
-  res.send('APP IS RUNNING.');
-})
+else {
+  app.get('/', (req,res) => {
+    res.send('APP IS RUNNING.');
+  })
+}
 
 const PORT = process.env.PORT || 5000;
 
