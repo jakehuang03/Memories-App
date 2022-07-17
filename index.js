@@ -4,12 +4,13 @@ import mongoose from "mongoose";
 import cors from "cors";
 import postRoutes from "./routes/posts.js";
 import userRoutes from "./routes/users.js";
-import { dirname } from "path";
-
-require("dotenv").config({ path: "./config.env" });
+import path from "path";
+import dotenv from "dotenv";
 const path = require('path');
 
 const app = express();
+dotenv.config();
+
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use(cors());
@@ -17,7 +18,7 @@ app.use(cors());
 app.use("/api/posts", postRoutes);
 app.use("/api/user", userRoutes);
 
-if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging') {
+if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, 'client/build')));
   app.get('*', (req,res) => {
     res.sendFile(path.join(__dirname, 'client/build/index.html'));
