@@ -1,14 +1,14 @@
-import express from "express";
-import bodyParser from "body-parser";
-import mongoose from "mongoose";
-import cors from "cors";
-import postRoutes from "./routes/posts.js";
-import userRoutes from "./routes/users.js";
-import path from "path";
-import dotenv from "dotenv";
+require("dotenv").config({path: "./config.env"});
+const mongoose = require("mongoose")
+const express = require("express");
+const bodyParser = require("body-parser");
+const cors = require("cors");
+const postRoutes = require("./routes/posts");
+const userRoutes = require("./routes/users");
+const path = require("path");
+
 
 const app = express();
-dotenv.config();
 
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));

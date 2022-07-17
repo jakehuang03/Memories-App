@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
 
 const postSchema = mongoose.Schema({
     title: String,
@@ -23,4 +23,4 @@ const postSchema = mongoose.Schema({
 
 var PostMessage = mongoose.model('PostMessage', postSchema);
 
-export default PostMessage;
+module.exports = PostMessage;

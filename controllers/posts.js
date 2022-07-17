@@ -1,7 +1,7 @@
-import mongoose from "mongoose";
-import PostMessage from "../models/postMessage.js";
+const mongoose = require("mongoose");
+const PostMessage = require("../models/postMessage");
 
-export const getPost = async (req,res) => {
+exports.getPost = async (req,res) => {
     const {id} = req.params;
 
     try {
@@ -12,7 +12,7 @@ export const getPost = async (req,res) => {
         res.status(404).json({message: error.message});
     }
 }
-export const getPosts = async (req,res) => {
+exports.getPosts = async (req,res) => {
     const {page} = req.query;
     try{
         const LIMIT = 6;
@@ -25,7 +25,7 @@ export const getPosts = async (req,res) => {
     }
 }
 
-export const getPostsBySearch = async (req, res) => {
+exports.getPostsBySearch = async (req, res) => {
     const {searchQuery, tags} = req.query;
     try{
         const title = new RegExp(searchQuery, "i");
@@ -36,7 +36,7 @@ export const getPostsBySearch = async (req, res) => {
     }
 }
 
-export const createPost = async (req,res) => {
+exports.createPost = async (req,res) => {
     const post = req.body;
     const newPostMessage = new PostMessage({ ...post, creator: req.userId, createdAt: new Date().toISOString() })
 
@@ -49,7 +49,7 @@ export const createPost = async (req,res) => {
     }
 }
 
-export const updatePost = async (req,res) => {
+exports.updatePost = async (req,res) => {
     const {id} = req.params;
     const post = req.body;
     if(!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send('No post with that id');
@@ -62,14 +62,14 @@ export const updatePost = async (req,res) => {
     res.json(updatedPost);
 }
 
-export const deletePost = async (req,res) => {
+exports.deletePost = async (req,res) => {
     const {id} = req.params;
     if(!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send('No posts with that id');
     await PostMessage.findByIdAndRemove(id);
     res.json({message: 'Post deleted successfully'});
 }
 
-export const likePost = async (req,res) => {
+exports.likePost = async (req,res) => {
     const {id} = req.params;
     if (!req.userId) {
         return res.json({ message: "Unauthenticated" });
@@ -89,7 +89,7 @@ export const likePost = async (req,res) => {
     res.json(updatedPost);
 }
 
-export const commentPost = async (req,res) => {
+exports.commentPost = async (req,res) => {
     const {id} = req.params;
     const {comment} = req.body;
     const post = await PostMessage.findById(id);
