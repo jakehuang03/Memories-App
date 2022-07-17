@@ -1,7 +1,6 @@
 import React, {useState } from "react";
-import { Grid, Container, Grow, Paper, AppBar, TextField, Button} from "@material-ui/core";
+import { Grid, Container, Grow, Paper, AppBar, TextField, Button, Chip} from "@material-ui/core";
 import {useHistory, useLocation} from 'react-router-dom';
-import ChipInput from 'material-ui-chip-input';
 import Posts from "../Posts/Posts";
 import Form from "../Form/Form";
 import {getPostsBySearch } from "../../actions/posts";
@@ -58,7 +57,13 @@ const Home = () => {
                 value={search}
                 onChange={(event) => setSearch(event.target.value)}
                 />
-                <ChipInput 
+                {/* <TextField 
+                  name="search tags"
+                  variant="outlined"
+                  label="Search Tags"
+                  fullWidth
+                /> */}
+                <Chip 
                   style={{margin: '10px 0'}}
                   value={tags}
                   onAdd={handleAdd}
