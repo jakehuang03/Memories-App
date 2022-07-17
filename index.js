@@ -16,6 +16,13 @@ app.use(cors());
 app.use("/posts", postRoutes);
 app.use("/user", userRoutes);
 
+if(process.env.NODE_ENV === 'production') {
+  app.use(express.static('client/build'));
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname + '/client/build/index.html'));
+    });
+}
+
 app.get('/', (req,res) => {
   res.send('APP IS RUNNING.');
 })
