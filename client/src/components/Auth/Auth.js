@@ -7,7 +7,7 @@ import Input from "./Input";
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import {signin, signup} from '../../actions/auth';
-require('dotenv').config()
+require("dotenv").config({path: "./config.env"});
 
 const initialState = {firstName: '', lastName: '', email: '', password: '', confirmPassword: ''};
 
