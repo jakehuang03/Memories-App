@@ -1,4 +1,4 @@
-const express = require('express');
+const express = require("express");
 const {getPostsBySearch, getPost, getPosts, createPost, updatePost, deletePost, likePost, commentPost} = require('../controllers/posts');
 const auth = require('../middleware/auth');
 

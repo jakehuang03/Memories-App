@@ -1,5 +1,6 @@
 require("dotenv").config({path: "./config.env"});
 const mongoose = require("mongoose")
+const connectDB = require("./config/db");
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
@@ -7,7 +8,7 @@ const postRoutes = require("./routes/posts");
 const userRoutes = require("./routes/users");
 const path = require("path");
 
-
+connectDB();
 const app = express();
 
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
@@ -30,13 +31,4 @@ else {
 }
 
 const PORT = process.env.PORT || 5000;
-
-mongoose
-  .connect(process.env.CONNECTION_URL, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => app.listen(PORT, () => console.log(`Server Running on Port: http://localhost:${PORT}`)))
-  .catch((error) => console.log(error.message));
-
-mongoose.set("useFindAndModify", false);
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
