@@ -63,14 +63,14 @@ const Home = () => {
                   label="Search Tags"
                   fullWidth
                 /> */}
-                <Chip 
+                {/* <Chip 
                   style={{margin: '10px 0'}}
                   value={tags}
                   onAdd={handleAdd}
                   onDelete={handleDelete}
                   label="Search Tags"
                   variant="outlined"
-                />
+                /> */}
                 <Button onClick={searchPost} className={classes.searchButton} variant="contained" color="primary">Search</Button>
             </AppBar>
             <Form currentId={currentId} setCurrentId={setCurrentId} />
